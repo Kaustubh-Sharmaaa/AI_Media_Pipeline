@@ -130,5 +130,4 @@ cython_debug/
 Thumbs.db
 
 # Outputs and samples
-outputs/
-samples/ 
+outputs/ 

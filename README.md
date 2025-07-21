@@ -217,3 +217,28 @@ The output file `outputs/input.json` contains:
 If you have any questions or want to see further improvements, please reach out!
 
 --- 
+
+---
+
+## Running the Web UI on Localhost with Docker
+
+1. **Build the Docker image:**
+   ```sh
+   docker-compose build
+   ```
+
+2. **Start the API and Web UI:**
+   ```sh
+   docker-compose up api
+   ```
+
+3. **Open your browser and go to:**
+   [http://localhost:8000/](http://localhost:8000/)
+
+4. **Use the UI to:**
+   - Upload an audio file for transcription and intent extraction
+   - Upload an image for OCR
+   - Generate and download a TTS audio reply
+
+**Note:**
+- The TTS (text-to-speech) voice quality in Docker is basic/robotic due to the use of espeak-ng. This is a known limitation of open-source TTS in containers. For better voice quality, consider using a neural TTS engine or a cloud-based service. 

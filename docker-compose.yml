@@ -10,4 +10,22 @@ services:
     working_dir: /app
     entrypoint: ["python3", "-m", "receptro_ai_pipeline.orchestrator.app"]
     # Example command (override as needed)
-    command: ["--file", "receptro_ai_pipeline/samples/input.wav", "--output", "receptro_ai_pipeline/outputs/input.json"] 
+    command: ["--file", "receptro_ai_pipeline/samples/input.wav", "--output", "receptro_ai_pipeline/outputs/input.json"]
+
+  api:
+    build: .
+    image: receptro-ai-pipeline
+    container_name: receptro-ai-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples
+      - ./receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs
+    working_dir: /app
+    entrypoint: ["python3", "-m", "receptro_ai_pipeline.orchestrator.app", "serve"]
+    command: []
+
+# To run the CLI batch job:
+#   docker-compose run orchestrator --file ... --output ...
+# To run the API and web UI:
+#   docker-compose up api 

@@ -3,7 +3,7 @@ FROM python:3.9-slim
 # System dependencies for OCR, TTS, and build tools
 RUN echo "=== Installing system dependencies ===" && \
     apt-get update && \
-    apt-get install -y tesseract-ocr espeak ffmpeg build-essential git && \
+    apt-get install -y tesseract-ocr espeak espeak-ng espeak-ng-data ffmpeg build-essential git && \
     rm -rf /var/lib/apt/lists/*
 
 # Set workdir

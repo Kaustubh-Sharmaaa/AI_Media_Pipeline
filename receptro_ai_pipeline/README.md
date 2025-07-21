@@ -112,3 +112,164 @@ docker-compose up --build
 - **Config management:** `config.yaml` is present but not actively used.
 - **HTTP API:** Not implemented (optional per instructions).
 - **Task tracking:** `TASKS.md` should be updated as you progress.
+
+---
+
+## Development Log & Case Study
+
+### Project Motivation
+This project was designed as a modular, production-grade pipeline for media and data processing, suitable for real-world applications and as a showcase for advanced Python, ML, and DevOps skills. The goal was to create a system that could:
+- Transcribe speech from audio files
+- Extract intent and parameters from text
+- Convert text replies back into audio
+- Extract structured data from photographed documents
+- Orchestrate all steps via CLI or HTTP API
+- Be easily containerized and reproducible
+- Provide a user-friendly web UI for demonstration
+
+### Key Design Decisions
+- **Modular Architecture:** Each major function (transcribe, interpret, synthesize, extract) is a separate module with its own dependencies and tests.
+- **CLI-first, then API:** Started with a Typer CLI for orchestration, then added a FastAPI HTTP API and web UI for broader usability.
+- **Open Source Engines:** Used OpenAI Whisper (STT), spaCy (NLU), pyttsx3 (TTS), and pytesseract (OCR) to avoid paid APIs and ensure local/offline capability.
+- **Containerization:** Docker and Docker Compose for reproducibility and easy deployment.
+- **Comprehensive Documentation:** All steps, challenges, and solutions are documented for transparency and as a CV artifact.
+
+### Development & Debugging Highlights
+- **Path and Import Issues:** Resolved Python import errors by standardizing on `receptro_ai_pipeline` and using `PYTHONPATH=.`.
+- **Missing Sample Files:** Created and documented sample input files for all pipeline stages.
+- **Module Implementation:** Implemented missing functions (`parse_document`, `text_to_speech`) as needed, with robust error handling.
+- **Docker Build Fixes:** Addressed missing system dependencies (e.g., `git`, `build-essential`), Whisper install from GitHub, and spaCy model download in Docker.
+- **API & UI Iteration:** Refined the FastAPI endpoints and web UI, fixing issues with route registration, file handling, and JavaScript error handling.
+- **Logging:** Added detailed logging to both backend and frontend for easier debugging and transparency.
+- **User Feedback Loop:** Iteratively improved the UI and API based on real user feedback and error reports.
+
+### Why This Project is CV-Worthy
+- **Demonstrates full-stack Python skills:** From ML/NLP to web APIs and frontend JS.
+- **Production-readiness:** Modular, testable, containerized, and well-documented.
+- **Real-world use case:** Media and document processing pipeline is highly relevant for many industries.
+- **Problem-solving:** Shows ability to debug, refactor, and deliver robust solutions under real constraints.
+
+---
+
+## HTTP API & Web UI Documentation
+
+### FastAPI Endpoints
+
+#### `POST /process`
+- **Description:** Unified endpoint for all pipeline steps (audio, image, or text input).
+- **Consumes:** `multipart/form-data`
+- **Parameters:**
+  - `file`: (required) Audio, image, or text file
+  - `voice`: (optional, for TTS)
+  - `rate`: (optional, for TTS)
+- **Returns:**
+  - For audio/image: JSON with transcription/intent or OCR result
+  - For text: WAV audio file (TTS reply)
+
+##### Example: Audio File (Speech-to-Text + Intent)
+Request:
+```bash
+curl -F "file=@samples/input.wav" http://localhost:8000/process
+```
+Response (JSON):
+```json
+{
+  "transcription": {
+    "text": "Hi, I would like to get information about the car that I checked out yesterday. The Ford Mustang GT which was in red.",
+    "confidence": 0.47,
+    "timestamps": [ ... ]
+  },
+  "intent": {
+    "intent": "get_information",
+    "params": {
+      "car_make": "Ford",
+      "car_model": "Mustang GT",
+      "color": "red",
+      "date": "yesterday"
+    }
+  }
+}
+```
+
+##### Example: Image File (OCR)
+Request:
+```bash
+curl -F "file=@samples/registration_document.png" http://localhost:8000/process
+```
+Response (JSON):
+```json
+{
+  "text": "STATE VEHICLE REGISTRATION\nCERTIFICATE\nRegistration No.: ..."
+}
+```
+
+##### Example: Text File (TTS)
+Request:
+```bash
+curl -F "file=@samples/sample.txt" http://localhost:8000/process
+```
+Response: WAV audio file (Content-Type: audio/wav)
+
+---
+
+### Web UI
+- **Access:** [http://localhost:8000/](http://localhost:8000/)
+- **Features:**
+  1. Upload audio file → see transcription and intent
+  2. Upload image file → see OCR result
+  3. Edit/generate reply text → download TTS audio
+- **Sequential workflow:** Each step enables the next, with auto-generated summary replies.
+- **Robust error handling:** All errors and raw responses are logged in the browser console for debugging.
+
+---
+
+## API/Module Dependencies
+
+- **Orchestrator:** typer, fastapi, uvicorn, pyyaml, pydantic
+- **Transcribe:** openai-whisper, pydub
+- **Interpret:** spacy
+- **Synthesize:** pyttsx3
+- **Extract:** pytesseract, opencv-python
+
+---
+
+## Example Inputs & Outputs
+
+### Sample Inputs
+- `samples/input.wav` — Example audio query
+- `samples/registration_document.png` — Example car registration document
+- `samples/sample.txt` — Example text query
+
+### Sample Outputs
+- `outputs/input.json` — Transcription + intent extraction result
+- `outputs/registration.json` — OCR result
+- `outputs/sample_reply.wav` — TTS reply audio
+
+---
+
+## Configuration
+- `orchestrator/config.yaml` is present for future engine/module settings (currently minimal).
+
+---
+
+## Task Tracking & Testing
+- See `TASKS.md` for ongoing and completed tasks.
+- Each module has a `tests/` directory with unit/integration tests (coverage varies).
+
+---
+
+## Troubleshooting & Tips
+- If you see import errors, ensure you run with `PYTHONPATH=.` from the project root.
+- For Docker, ensure all sample and output directories are mounted as volumes.
+- For Whisper, spaCy, and Tesseract, ensure all dependencies are installed (see requirements.txt in each module).
+- Use browser console and backend logs for debugging API/UI issues.
+
+---
+
+## Limitations: TTS Voice Quality in Docker
+- The current TTS engine (pyttsx3 with espeak-ng) is fully offline and open source, but the generated voice quality in Docker containers is basic/robotic compared to desktop systems.
+- This is a known limitation of espeak-ng and open-source TTS in headless/server environments.
+- For production or demo use where high-quality voices are required, consider integrating a neural TTS engine (e.g., Coqui TTS) or a cloud-based service (note: may require internet and/or paid API).
+- All other pipeline steps (STT, OCR, NLU) work fully offline and as expected in Docker.
+
+---

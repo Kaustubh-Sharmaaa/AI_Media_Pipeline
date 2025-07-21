@@ -75,7 +75,6 @@ docker-compose up --build
 
 ## **Extensibility & Swapping Engines**
 - Swap transcription, NLU, TTS, or OCR engines by updating the relevant module and requirements.
-- See `instructions.md` for details on using Google, AWS, or OpenAI APIs.
 
 ---
 
@@ -85,7 +84,7 @@ docker-compose up --build
 
 ---
 
-## **What’s Covered from instructions.md**
+## **Project Requirements Coverage**
 
 | Requirement                                 | Status      |
 |----------------------------------------------|-------------|

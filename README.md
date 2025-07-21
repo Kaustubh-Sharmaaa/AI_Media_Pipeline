@@ -19,6 +19,62 @@ This repository is a showcase of my ability to design, implement, debug, and del
 
 ---
 
+## 📚 Case Study: Example End-to-End Flow
+
+### Scenario
+A customer at a car showroom wants to know more about a specific car they saw yesterday. They use a voice interface to ask:
+
+> "Hi, I would like to get information about the car that I checked out yesterday. The Ford Mustang GT which was in red."
+
+### Step 1: Audio Input
+- The user records their query as `input.wav` and uploads it to the system.
+
+### Step 2: Pipeline Processing (via Docker)
+```sh
+docker run --rm \
+  -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
+  -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+  receptro-ai-pipeline \
+  --file receptro_ai_pipeline/samples/input.wav \
+  --output receptro_ai_pipeline/outputs/input.json
+```
+
+### Step 3: What Happens Internally
+- **Transcription:** The audio is transcribed using OpenAI Whisper.
+- **Intent Extraction:** The transcribed text is analyzed with spaCy to extract the user's intent and parameters (car make, model, color, date).
+- **Output:** The results are saved as a JSON file.
+
+### Step 4: Output Example
+The output file `outputs/input.json` contains:
+```json
+{
+  "transcription": {
+    "text": "Hi, I would like to get information about the car that I checked out yesterday. The Ford Mustang GT which was in red.",
+    "confidence": 0.98,
+    "timestamps": [
+      {"start": 0.0, "end": 2.5, "text": "Hi, I would like to get information..."},
+      {"start": 2.5, "end": 5.0, "text": "...about the car that I checked out yesterday."},
+      {"start": 5.0, "end": 7.0, "text": "The Ford Mustang GT which was in red."}
+    ]
+  },
+  "intent": {
+    "intent": "get_information",
+    "params": {
+      "car_make": "Ford",
+      "car_model": "Mustang GT",
+      "color": "red",
+      "date": "yesterday"
+    }
+  }
+}
+```
+
+### Step 5: How This Helps
+- The sales team or an automated system can now instantly respond with detailed information about the specific car the customer is interested in, without manual data entry or ambiguity.
+- This same pipeline can handle document images (for OCR) and text queries (for TTS), making it a versatile, real-world AI solution.
+
+---
+
 ## 🛠️ Development Journey, Debugging & Challenges
 
 ### **1. Initial Planning & Architecture**

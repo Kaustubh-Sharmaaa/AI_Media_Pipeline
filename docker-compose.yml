@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  orchestrator:
+    build: .
+    image: receptro-ai-pipeline
+    container_name: receptro-ai-orchestrator
+    volumes:
+      - ./receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples
+      - ./receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs
+    working_dir: /app
+    entrypoint: ["python3", "-m", "receptro_ai_pipeline.orchestrator.app"]
+    # Example command (override as needed)
+    command: ["--file", "receptro_ai_pipeline/samples/input.wav", "--output", "receptro_ai_pipeline/outputs/input.json"] 

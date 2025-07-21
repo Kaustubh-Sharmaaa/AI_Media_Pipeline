@@ -118,35 +118,19 @@ The output file `outputs/input.json` contains:
 
 ---
 
-## 🏗️ Project Setup Instructions
+## 🚦 How to Use This Project (Quick Start)
 
-### **A. Local Setup (Python)**
-1. Clone the repository:
+### 🏁 **Quick Start (Recommended: Docker)**
+1. **Clone the repository:**
    ```sh
    git clone <your-repo-url>
    cd Receptro_Assessment
    ```
-2. Install Python 3.9+ and pip if not already installed.
-3. Install dependencies for each module:
-   ```sh
-   pip install -r receptro_ai_pipeline/orchestrator/requirements.txt
-   pip install -r receptro_ai_pipeline/transcribe/requirements.txt
-   pip install -r receptro_ai_pipeline/interpret/requirements.txt
-   pip install -r receptro_ai_pipeline/extract/requirements.txt
-   pip install -r receptro_ai_pipeline/synthesize/requirements.txt
-   python3 -m spacy download en_core_web_sm
-   ```
-4. Run the CLI:
-   ```sh
-   PYTHONPATH=. python3 receptro_ai_pipeline/orchestrator/app.py --file receptro_ai_pipeline/samples/input.wav --output receptro_ai_pipeline/outputs/input.json
-   ```
-
-### **B. Docker Setup (Recommended)**
-1. Build the Docker image:
+2. **Build the Docker image:**
    ```sh
    docker build -t receptro-ai-pipeline .
    ```
-2. Run the pipeline in a container:
+3. **Run a sample pipeline (audio to JSON):**
    ```sh
    docker run --rm \
      -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
@@ -155,11 +139,58 @@ The output file `outputs/input.json` contains:
      --file receptro_ai_pipeline/samples/input.wav \
      --output receptro_ai_pipeline/outputs/input.json
    ```
-3. Or use Docker Compose for even easier management:
+   - The output will appear in `receptro_ai_pipeline/outputs/input.json`.
+
+4. **Try other file types:**
+   - For OCR (image to JSON):
+     ```sh
+     docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
+       -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+       receptro-ai-pipeline \
+       --file receptro_ai_pipeline/samples/registration_document.png \
+       --output receptro_ai_pipeline/outputs/registration.json
+     ```
+   - For text-to-speech (text to WAV):
+     ```sh
+     docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
+       -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+       receptro-ai-pipeline \
+       --file receptro_ai_pipeline/samples/sample.txt \
+       --output receptro_ai_pipeline/outputs/sample_reply.wav
+     ```
+
+5. **(Optional) Use Docker Compose for easier management:**
    ```sh
    docker-compose up
    ```
    - Edit the `command:` in `docker-compose.yml` to change the input/output.
+
+---
+
+### 🐍 **Running Locally (Python, for advanced users)**
+1. **Install Python 3.9+ and pip.**
+2. **Install dependencies for each module:**
+   ```sh
+   pip install -r receptro_ai_pipeline/orchestrator/requirements.txt
+   pip install -r receptro_ai_pipeline/transcribe/requirements.txt
+   pip install -r receptro_ai_pipeline/interpret/requirements.txt
+   pip install -r receptro_ai_pipeline/extract/requirements.txt
+   pip install -r receptro_ai_pipeline/synthesize/requirements.txt
+   python3 -m spacy download en_core_web_sm
+   ```
+3. **Run the CLI:**
+   ```sh
+   PYTHONPATH=. python3 receptro_ai_pipeline/orchestrator/app.py --file receptro_ai_pipeline/samples/input.wav --output receptro_ai_pipeline/outputs/input.json
+   ```
+
+---
+
+### 💡 **Tips & Troubleshooting**
+- **Docker not found?** Install Docker Desktop: https://www.docker.com/products/docker-desktop
+- **Permission errors?** Try running with `sudo` or check your Docker permissions.
+- **Output not appearing?** Make sure you are mounting the correct `outputs/` directory as a volume.
+- **Want to use your own files?** Place them in `receptro_ai_pipeline/samples/` and adjust the `--file` and `--output` arguments.
+- **Need more help?** Open an issue or check the detailed documentation below.
 
 ---
 

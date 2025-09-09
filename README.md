@@ -1,8 +1,8 @@
-# Receptro.AI Modular Media & Data Processing Pipeline
+# AI Media & Data Processing Pipeline
 
 ---
 
-## 🚀 Project Overview & Why This Is My CV Project
+## 🚀 Project Overview
 
 This repository is a showcase of my ability to design, implement, debug, and deliver a **production-grade, modular AI pipeline** for real-world media and data processing. It demonstrates:
 - **Full-stack engineering:** From Python modules to Docker orchestration
@@ -10,7 +10,7 @@ This repository is a showcase of my ability to design, implement, debug, and del
 - **Robust debugging and problem-solving**
 - **Best practices:** Modularization, documentation, reproducibility, and automation
 
-**Why this project is CV-worthy:**
+**Why this project matters:**
 - It covers the full lifecycle: requirements analysis, architecture, implementation, testing, containerization, and documentation.
 - It integrates multiple AI technologies and open-source tools, showing my ability to work across domains.
 - The codebase is clean, well-structured, and ready for extension or production use.
@@ -34,7 +34,7 @@ A customer at a car showroom wants to know more about a specific car they saw ye
 docker run --rm \
   -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
   -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
-  receptro-ai-pipeline \
+  ai-media-pipeline \
   --file receptro_ai_pipeline/samples/input.wav \
   --output receptro_ai_pipeline/outputs/input.json
 ```
@@ -120,33 +120,33 @@ The output file `outputs/input.json` contains:
 
 ## 🚦 How to Use This Project (Quick Start)
 
-### 🏁 **Quick Start (Recommended: Docker)**
+### 🏁 **Quick Start (Docker)**
 1. **Clone the repository:**
    ```sh
    git clone <your-repo-url>
-   cd Receptro_Assessment
+   cd AI_Media_Pipeline
    ```
 2. **Build the Docker image:**
    ```sh
-   docker build -t receptro-ai-pipeline .
+   docker build -t ai-media-pipeline .
    ```
 3. **Run a sample pipeline (audio to JSON):**
    ```sh
    docker run --rm \
      -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
      -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
-     receptro-ai-pipeline \
+     ai-media-pipeline \
      --file receptro_ai_pipeline/samples/input.wav \
      --output receptro_ai_pipeline/outputs/input.json
    ```
-   - The output will appear in `receptro_ai_pipeline/outputs/input.json`.
+   - The output appears in `receptro_ai_pipeline/outputs/input.json`.
 
 4. **Try other file types:**
    - For OCR (image to JSON):
      ```sh
      docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
        -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
-       receptro-ai-pipeline \
+       ai-media-pipeline \
        --file receptro_ai_pipeline/samples/registration_document.png \
        --output receptro_ai_pipeline/outputs/registration.json
      ```
@@ -154,7 +154,7 @@ The output file `outputs/input.json` contains:
      ```sh
      docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
        -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
-       receptro-ai-pipeline \
+       ai-media-pipeline \
        --file receptro_ai_pipeline/samples/sample.txt \
        --output receptro_ai_pipeline/outputs/sample_reply.wav
      ```

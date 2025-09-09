@@ -1,4 +1,4 @@
-# Receptro.AI Modular Media & Data Processing Pipeline
+# AI Media & Data Processing Pipeline
 
 This project provides a modular, containerized pipeline for:
 - **Speech-to-text transcription** (audio → text)
@@ -47,7 +47,7 @@ PYTHONPATH=. python3 receptro_ai_pipeline/orchestrator/app.py --file receptro_ai
 
 **Build the image:**
 ```sh
-docker build -t receptro-ai-pipeline ./receptro_ai_pipeline/orchestrator/
+docker build -t ai-media-pipeline ./receptro_ai_pipeline/orchestrator/
 ```
 
 **Run the CLI:**
@@ -55,7 +55,7 @@ docker build -t receptro-ai-pipeline ./receptro_ai_pipeline/orchestrator/
 docker run --rm \
   -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
   -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
-  receptro-ai-pipeline \
+  ai-media-pipeline \
   --file receptro_ai_pipeline/samples/input.wav \
   --output receptro_ai_pipeline/outputs/input.json
 ```
@@ -84,27 +84,13 @@ docker-compose up --build
 
 ---
 
-## **Project Requirements Coverage**
-
-| Requirement                                 | Status      |
-|----------------------------------------------|-------------|
-| Project structure & modularization           | ✅ Complete |
-| Speech-to-text (Whisper)                     | ✅ Complete |
-| Intent extraction (spaCy)                    | ✅ Complete |
-| Text-to-speech (pyttsx3, local)              | ✅ Complete |
-| OCR (Tesseract)                              | ✅ Complete |
-| CLI orchestrator (Typer)                     | ✅ Complete |
-| Dockerfile                                   | ✅ Complete |
-| Docker Compose                               | ✅ Complete |
-| Sample input/output files                    | ✅ Complete |
-| README with usage and rationale              | ✅ Complete |
-| Config file (`config.yaml`)                  | ⬜ Minimal, can be expanded |
-| Unit tests for each module                   | ⬜ Stubs exist, but not all modules have full tests |
-| HTTP interface (FastAPI)                     | ⬜ Not implemented (optional) |
-| Template-based/ML-based field extraction     | ⬜ Only raw OCR, no field mapping yet |
-| Task tracking (`TASKS.md`)                   | ⬜ Needs updating as tasks progress |
-
----
+## **Feature Overview**
+- Speech-to-text (Whisper)
+- Intent extraction (spaCy)
+- Text-to-speech (pyttsx3, local)
+- OCR (Tesseract)
+- CLI orchestrator (Typer)
+- Docker and Docker Compose
 
 ## **What’s Missing or Could Be Improved**
 - **Field mapping in OCR:** Only raw text is extracted; no structured field extraction (e.g., extracting name, VIN, etc. as fields).
@@ -115,10 +101,10 @@ docker-compose up --build
 
 ---
 
-## Development Log & Case Study
+## Development Notes
 
 ### Project Motivation
-This project was designed as a modular, production-grade pipeline for media and data processing, suitable for real-world applications and as a showcase for advanced Python, ML, and DevOps skills. The goal was to create a system that could:
+This project is a modular, production-grade pipeline for media and data processing, suitable for real-world applications and as a showcase for advanced Python, ML, and DevOps skills. The goals include:
 - Transcribe speech from audio files
 - Extract intent and parameters from text
 - Convert text replies back into audio
@@ -143,11 +129,11 @@ This project was designed as a modular, production-grade pipeline for media and 
 - **Logging:** Added detailed logging to both backend and frontend for easier debugging and transparency.
 - **User Feedback Loop:** Iteratively improved the UI and API based on real user feedback and error reports.
 
-### Why This Project is CV-Worthy
-- **Demonstrates full-stack Python skills:** From ML/NLP to web APIs and frontend JS.
-- **Production-readiness:** Modular, testable, containerized, and well-documented.
-- **Real-world use case:** Media and document processing pipeline is highly relevant for many industries.
-- **Problem-solving:** Shows ability to debug, refactor, and deliver robust solutions under real constraints.
+### What This Project Demonstrates
+- Full-stack Python skills from ML/NLP to web APIs and frontend JS
+- Production-readiness: modular, testable, containerized, and documented
+- Real-world relevance: media and document processing across industries
+- Problem-solving: ability to debug, refactor, and deliver under constraints
 
 ---
 
@@ -252,9 +238,8 @@ Response: WAV audio file (Content-Type: audio/wav)
 
 ---
 
-## Task Tracking & Testing
-- See `TASKS.md` for ongoing and completed tasks.
-- Each module has a `tests/` directory with unit/integration tests (coverage varies).
+## Testing
+- Each module includes unit/integration tests (coverage varies).
 
 ---
 

@@ -1,4 +1,4 @@
-**Cursor AI Agent Instructions for Receptro.AI Modular Media & Data Processing Pipeline**
+**Cursor AI Agent Instructions for AI Media & Data Processing Pipeline**
 
 This document provides a comprehensive, step-by-step guide for AI agents (e.g., Cursor) to design, implement, and deliver an end-to-end solution that:
 
@@ -15,7 +15,7 @@ This document provides a comprehensive, step-by-step guide for AI agents (e.g., 
 Create the following top-level folders and files:
 
 ```
-receptro-ai-pipeline/
+ai-media-pipeline/
 ├── transcribe/         # Speech-to-text logic & tests
 │   ├── transcribe.py
 │   ├── tests/

@@ -4,7 +4,7 @@ import json
 from typing import Optional
 
 app = typer.Typer(help="""
-Receptro.AI CLI Orchestrator
+AI Media Pipeline CLI Orchestrator
 
 Usage Examples:
   python orchestrator/app.py process --file samples/input.wav --output outputs/input.json

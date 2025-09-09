@@ -36,4 +36,4 @@ def test_parse_intent_unknown():
     text = "I want something fast."
     result = interpret.parse_intent(text)
     assert result["intent"] == "unknown"
-    assert result["params"] == {} 
+    assert result["params"] == {}

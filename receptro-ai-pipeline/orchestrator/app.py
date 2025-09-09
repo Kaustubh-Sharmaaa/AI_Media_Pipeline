@@ -4,12 +4,12 @@ import json
 from typing import Optional
 
 app = typer.Typer(help="""
-Receptro.AI CLI Orchestrator
+AI Media Pipeline CLI Orchestrator
 
 Usage Examples:
-  python -m receptro_ai_pipeline.orchestrator.app process --file samples/input.wav --output outputs/input.json
-  python -m receptro_ai_pipeline.orchestrator.app process --file registration_document.png --output outputs/registration.json
-  python -m receptro_ai_pipeline.orchestrator.app process --file samples/sample.txt --output outputs/reply.wav
+  python -m ai_media_pipeline.orchestrator.app process --file samples/input.wav --output outputs/input.json
+  python -m ai_media_pipeline.orchestrator.app process --file registration_document.png --output outputs/registration.json
+  python -m ai_media_pipeline.orchestrator.app process --file samples/sample.txt --output outputs/reply.wav
 """)
 
 @app.command()
@@ -27,8 +27,8 @@ def process(
     try:
         if ext in ['.wav', '.mp3', '.m4a', '.flac', '.ogg']:
             typer.echo("[DEBUG] Detected audio file. Running transcription...")
-            from receptro_ai_pipeline.transcribe.transcribe import transcribe_audio
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.transcribe.transcribe import transcribe_audio
+            from ai_media_pipeline.interpret.interpret import parse_intent
             result = transcribe_audio(file)
             typer.echo(f"[Transcription] {result['text']}")
             typer.echo("[DEBUG] Running intent extraction...")
@@ -39,7 +39,7 @@ def process(
             typer.echo(f"[DEBUG] Output written to {output}")
         elif ext in ['.png', '.jpg', '.jpeg']:
             typer.echo("[DEBUG] Detected image file. Running OCR extraction...")
-            from receptro_ai_pipeline.extract.extract import parse_document
+            from ai_media_pipeline.extract.extract import parse_document
             result = parse_document(file)
             typer.echo(f"[Extracted Fields] {json.dumps(result, indent=2)}")
             with open(output, 'w') as f:
@@ -47,8 +47,8 @@ def process(
             typer.echo(f"[DEBUG] Output written to {output}")
         elif ext in ['.txt']:
             typer.echo("[DEBUG] Detected text file. Running intent extraction and TTS...")
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
-            from receptro_ai_pipeline.synthesize.synth import text_to_speech
+            from ai_media_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.synthesize.synth import text_to_speech
             with open(file) as f:
                 text = f.read()
             nlu = parse_intent(text)

@@ -2,27 +2,27 @@ version: '3.8'
 services:
   orchestrator:
     build: .
-    image: receptro-ai-pipeline
-    container_name: receptro-ai-orchestrator
+    image: ai-media-pipeline
+    container_name: ai-media-orchestrator
     volumes:
-      - ./receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples
-      - ./receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs
+      - ./ai_media_pipeline/samples:/app/ai_media_pipeline/samples
+      - ./ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs
     working_dir: /app
-    entrypoint: ["python3", "-m", "receptro_ai_pipeline.orchestrator.app"]
+    entrypoint: ["python3", "-m", "ai_media_pipeline.orchestrator.app"]
     # Example command (override as needed)
-    command: ["--file", "receptro_ai_pipeline/samples/input.wav", "--output", "receptro_ai_pipeline/outputs/input.json"]
+    command: ["--file", "ai_media_pipeline/samples/input.wav", "--output", "ai_media_pipeline/outputs/input.json"]
 
   api:
     build: .
-    image: receptro-ai-pipeline
-    container_name: receptro-ai-api
+    image: ai-media-pipeline
+    container_name: ai-media-api
     ports:
       - "8000:8000"
     volumes:
-      - ./receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples
-      - ./receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs
+      - ./ai_media_pipeline/samples:/app/ai_media_pipeline/samples
+      - ./ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs
     working_dir: /app
-    entrypoint: ["python3", "-m", "receptro_ai_pipeline.orchestrator.app", "serve"]
+    entrypoint: ["python3", "-m", "ai_media_pipeline.orchestrator.app", "serve"]
     command: []
 
 # To run the CLI batch job:

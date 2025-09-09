@@ -8,13 +8,13 @@ from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 import uvicorn
 
 app = typer.Typer(help="""
-Receptro.AI CLI Orchestrator
+AI Media Pipeline CLI Orchestrator
 
 Usage Examples:
-  python -m receptro_ai_pipeline.orchestrator.app process --file samples/input.wav --output outputs/input.json
-  python -m receptro_ai_pipeline.orchestrator.app process --file registration_document.png --output outputs/registration.json
-  python -m receptro_ai_pipeline.orchestrator.app process --file samples/sample.txt --output outputs/reply.wav
-  python -m receptro_ai_pipeline.orchestrator.app serve  # Launch HTTP API (see docs below)
+  python -m ai_media_pipeline.orchestrator.app process --file samples/input.wav --output outputs/input.json
+  python -m ai_media_pipeline.orchestrator.app process --file registration_document.png --output outputs/registration.json
+  python -m ai_media_pipeline.orchestrator.app process --file samples/sample.txt --output outputs/reply.wav
+  python -m ai_media_pipeline.orchestrator.app serve  # Launch HTTP API (see docs below)
 
 HTTP API:
   POST /process
@@ -24,14 +24,14 @@ HTTP API:
     Returns: JSON (for audio/image) or WAV file (for TTS)
 """)
 
-fastapi_app = FastAPI(title="Receptro.AI Orchestrator API")
+fastapi_app = FastAPI(title="AI Media Pipeline Orchestrator API")
 
 @fastapi_app.get("/", response_class=HTMLResponse)
 async def root_ui():
     return """
     <html>
     <head>
-      <title>Receptro.AI Sequential Pipeline Demo</title>
+      <title>AI Media Pipeline — Sequential Demo</title>
       <style>
         body { font-family: Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
         .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 32px; }
@@ -51,7 +51,7 @@ async def root_ui():
     </head>
     <body>
       <div class="container">
-      <h2>Receptro.AI Pipeline: Sequential Demo</h2>
+      <h2>AI Media Pipeline: Sequential Demo</h2>
       <ol>
         <li><span class="step-title">1. Speech-to-Text & Intent Extraction</span><br>
           <form id='stt-form' enctype='multipart/form-data'>
@@ -189,8 +189,8 @@ async def process_api(
     try:
         if ext in ['.wav', '.mp3', '.m4a', '.flac', '.ogg']:
             print(f"[API] Detected audio file. Running transcription...")
-            from receptro_ai_pipeline.transcribe.transcribe import transcribe_audio
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.transcribe.transcribe import transcribe_audio
+            from ai_media_pipeline.interpret.interpret import parse_intent
             result = transcribe_audio(tmp_path)
             print(f"[API] Transcription result: {result}")
             nlu = parse_intent(result['text'])
@@ -198,15 +198,15 @@ async def process_api(
             return JSONResponse(content={'transcription': result, 'intent': nlu})
         elif ext in ['.png', '.jpg', '.jpeg']:
             print(f"[API] Detected image file. Running OCR extraction...")
-            from receptro_ai_pipeline.extract.extract import parse_document
+            from ai_media_pipeline.extract.extract import parse_document
             result = parse_document(tmp_path)
             print(f"[API] OCR result: {result}")
             return JSONResponse(content=result)
         elif ext in ['.txt']:
             print(f"[API] Detected text file. Running intent extraction and TTS...")
             rate_val = int(rate) if rate and rate.strip() else None
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
-            from receptro_ai_pipeline.synthesize.synth import text_to_speech
+            from ai_media_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.synthesize.synth import text_to_speech
             with open(tmp_path) as f:
                 text = f.read()
             print(f"[API] Text for TTS: {text}")
@@ -242,8 +242,8 @@ def process(
     try:
         if ext in ['.wav', '.mp3', '.m4a', '.flac', '.ogg']:
             typer.echo("[DEBUG] Detected audio file. Running transcription...")
-            from receptro_ai_pipeline.transcribe.transcribe import transcribe_audio
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.transcribe.transcribe import transcribe_audio
+            from ai_media_pipeline.interpret.interpret import parse_intent
             result = transcribe_audio(file)
             typer.echo(f"[Transcription] {result['text']}")
             typer.echo("[DEBUG] Running intent extraction...")
@@ -254,7 +254,7 @@ def process(
             typer.echo(f"[DEBUG] Output written to {output}")
         elif ext in ['.png', '.jpg', '.jpeg']:
             typer.echo("[DEBUG] Detected image file. Running OCR extraction...")
-            from receptro_ai_pipeline.extract.extract import parse_document
+            from ai_media_pipeline.extract.extract import parse_document
             result = parse_document(file)
             typer.echo(f"[Extracted Fields] {json.dumps(result, indent=2)}")
             with open(output, 'w') as f:
@@ -262,8 +262,8 @@ def process(
             typer.echo(f"[DEBUG] Output written to {output}")
         elif ext in ['.txt']:
             typer.echo("[DEBUG] Detected text file. Running intent extraction and TTS...")
-            from receptro_ai_pipeline.interpret.interpret import parse_intent
-            from receptro_ai_pipeline.synthesize.synth import text_to_speech
+            from ai_media_pipeline.interpret.interpret import parse_intent
+            from ai_media_pipeline.synthesize.synth import text_to_speech
             with open(file) as f:
                 text = f.read()
             nlu = parse_intent(text)
@@ -281,7 +281,7 @@ def process(
 def serve():
     """Run the HTTP API server (FastAPI) on http://0.0.0.0:8000"""
     typer.echo("[INFO] Starting FastAPI server on http://0.0.0.0:8000 ...")
-    uvicorn.run("receptro_ai_pipeline.orchestrator.app:fastapi_app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run("ai_media_pipeline.orchestrator.app:fastapi_app", host="0.0.0.0", port=8000, reload=False)
 
 if __name__ == "__main__":
     app()

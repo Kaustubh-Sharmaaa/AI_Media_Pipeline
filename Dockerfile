@@ -16,23 +16,23 @@ COPY . /app
 # Install Python dependencies (combine all requirements)
 RUN echo "=== Installing Python dependencies: orchestrator ===" && \
     pip install --upgrade pip && \
-    pip install -r receptro_ai_pipeline/orchestrator/requirements.txt
+    pip install -r ai_media_pipeline/orchestrator/requirements.txt
 
 RUN echo "=== Installing Python dependencies: transcribe ===" && \
-    pip install -r receptro_ai_pipeline/transcribe/requirements.txt
+    pip install -r ai_media_pipeline/transcribe/requirements.txt
 
 RUN echo "=== Installing Python dependencies: interpret ===" && \
-    pip install -r receptro_ai_pipeline/interpret/requirements.txt && \
+    pip install -r ai_media_pipeline/interpret/requirements.txt && \
     python3 -m spacy download en_core_web_sm
 
 RUN echo "=== Installing Python dependencies: extract ===" && \
-    pip install -r receptro_ai_pipeline/extract/requirements.txt
+    pip install -r ai_media_pipeline/extract/requirements.txt
 
 RUN echo "=== Installing Python dependencies: synthesize ===" && \
-    pip install -r receptro_ai_pipeline/synthesize/requirements.txt
+    pip install -r ai_media_pipeline/synthesize/requirements.txt
 
 # Expose a volume for outputs (optional)
-VOLUME ["/app/receptro_ai_pipeline/outputs"]
+VOLUME ["/app/ai_media_pipeline/outputs"]
 
 # Default entrypoint: CLI orchestrator
-ENTRYPOINT ["python3", "-m", "receptro_ai_pipeline.orchestrator.app"] 
+ENTRYPOINT ["python3", "-m", "ai_media_pipeline.orchestrator.app"] 

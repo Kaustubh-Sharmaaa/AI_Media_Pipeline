@@ -32,11 +32,11 @@ A customer at a car showroom wants to know more about a specific car they saw ye
 ### Step 2: Pipeline Processing (via Docker)
 ```sh
 docker run --rm \
-  -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
-  -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+  -v $(pwd)/ai_media_pipeline/samples:/app/ai_media_pipeline/samples \
+  -v $(pwd)/ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs \
   ai-media-pipeline \
-  --file receptro_ai_pipeline/samples/input.wav \
-  --output receptro_ai_pipeline/outputs/input.json
+  --file ai_media_pipeline/samples/input.wav \
+  --output ai_media_pipeline/outputs/input.json
 ```
 
 ### Step 3: What Happens Internally
@@ -133,30 +133,30 @@ The output file `outputs/input.json` contains:
 3. **Run a sample pipeline (audio to JSON):**
    ```sh
    docker run --rm \
-     -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
-     -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+     -v $(pwd)/ai_media_pipeline/samples:/app/ai_media_pipeline/samples \
+     -v $(pwd)/ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs \
      ai-media-pipeline \
-     --file receptro_ai_pipeline/samples/input.wav \
-     --output receptro_ai_pipeline/outputs/input.json
+     --file ai_media_pipeline/samples/input.wav \
+     --output ai_media_pipeline/outputs/input.json
    ```
-   - The output appears in `receptro_ai_pipeline/outputs/input.json`.
+   - The output appears in `ai_media_pipeline/outputs/input.json`.
 
 4. **Try other file types:**
    - For OCR (image to JSON):
      ```sh
-     docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
-       -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+     docker run --rm -v $(pwd)/ai_media_pipeline/samples:/app/ai_media_pipeline/samples \
+       -v $(pwd)/ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs \
        ai-media-pipeline \
-       --file receptro_ai_pipeline/samples/registration_document.png \
-       --output receptro_ai_pipeline/outputs/registration.json
+       --file ai_media_pipeline/samples/registration_document.png \
+       --output ai_media_pipeline/outputs/registration.json
      ```
    - For text-to-speech (text to WAV):
      ```sh
-     docker run --rm -v $(pwd)/receptro_ai_pipeline/samples:/app/receptro_ai_pipeline/samples \
-       -v $(pwd)/receptro_ai_pipeline/outputs:/app/receptro_ai_pipeline/outputs \
+     docker run --rm -v $(pwd)/ai_media_pipeline/samples:/app/ai_media_pipeline/samples \
+       -v $(pwd)/ai_media_pipeline/outputs:/app/ai_media_pipeline/outputs \
        ai-media-pipeline \
-       --file receptro_ai_pipeline/samples/sample.txt \
-       --output receptro_ai_pipeline/outputs/sample_reply.wav
+       --file ai_media_pipeline/samples/sample.txt \
+       --output ai_media_pipeline/outputs/sample_reply.wav
      ```
 
 5. **(Optional) Use Docker Compose for easier management:**
@@ -171,16 +171,16 @@ The output file `outputs/input.json` contains:
 1. **Install Python 3.9+ and pip.**
 2. **Install dependencies for each module:**
    ```sh
-   pip install -r receptro_ai_pipeline/orchestrator/requirements.txt
-   pip install -r receptro_ai_pipeline/transcribe/requirements.txt
-   pip install -r receptro_ai_pipeline/interpret/requirements.txt
-   pip install -r receptro_ai_pipeline/extract/requirements.txt
-   pip install -r receptro_ai_pipeline/synthesize/requirements.txt
+   pip install -r ai_media_pipeline/orchestrator/requirements.txt
+   pip install -r ai_media_pipeline/transcribe/requirements.txt
+   pip install -r ai_media_pipeline/interpret/requirements.txt
+   pip install -r ai_media_pipeline/extract/requirements.txt
+   pip install -r ai_media_pipeline/synthesize/requirements.txt
    python3 -m spacy download en_core_web_sm
    ```
 3. **Run the CLI:**
    ```sh
-   PYTHONPATH=. python3 receptro_ai_pipeline/orchestrator/app.py --file receptro_ai_pipeline/samples/input.wav --output receptro_ai_pipeline/outputs/input.json
+   PYTHONPATH=. python3 ai_media_pipeline/orchestrator/app.py --file ai_media_pipeline/samples/input.wav --output ai_media_pipeline/outputs/input.json
    ```
 
 ---
@@ -189,7 +189,7 @@ The output file `outputs/input.json` contains:
 - **Docker not found?** Install Docker Desktop: https://www.docker.com/products/docker-desktop
 - **Permission errors?** Try running with `sudo` or check your Docker permissions.
 - **Output not appearing?** Make sure you are mounting the correct `outputs/` directory as a volume.
-- **Want to use your own files?** Place them in `receptro_ai_pipeline/samples/` and adjust the `--file` and `--output` arguments.
+- **Want to use your own files?** Place them in `ai_media_pipeline/samples/` and adjust the `--file` and `--output` arguments.
 - **Need more help?** Open an issue or check the detailed documentation below.
 
 ---
